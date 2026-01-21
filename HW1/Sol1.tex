@@ -12,56 +12,93 @@
 
 \section*{Question 1}
 
-\subsection*{Report: Iterative Methods for Eigenvalue Computation}
+\subsection*{Iterative eigenvalue methods: an intuitive story}
+Think of a matrix $A$ as a machine that acts on vectors: it can rotate, shear, and stretch them.
+Most directions are changed in complicated ways, but some special directions come back pointing the same way after applying $A$.
+Those directions are \emph{eigenvectors} $v\neq 0$ satisfying
+\[
+Av=\lambda v,
+\]
+where $\lambda$ is the corresponding \emph{eigenvalue} (the factor by which $A$ stretches $v$).
+When matrices are large, computing all eigenvalues exactly (e.g., from a characteristic polynomial) is impractical and numerically fragile.
+Iterative methods instead exploit one operation we can often do efficiently: repeatedly multiply by $A$ (or solve linear systems involving $A$).
 
-\subsubsection*{Overview}
-In many practical applications involving large sparse matrices, computing the entire spectrum is computationally expensive and often unnecessary. Instead, iterative methods such as \textbf{Power Iteration} are employed to find specific eigenvalues, typically the one with the largest magnitude (the dominant eigenvalue).
+\subsection*{Power iteration: repeated multiplication reveals the dominant direction}
+The simplest method is \emph{power iteration}. Choose any nonzero starting vector $b_0$ and repeat:
+\begin{align*}
+c_{k+1} &= Ab_k,\\
+b_{k+1} &= \frac{c_{k+1}}{\|c_{k+1}\|}.
+\end{align*}
+Normalization ``resets the length'' so we can watch the direction. The method tends to align $b_k$ with the eigenvector associated with the eigenvalue of largest magnitude.
 
-However, when the goal is to find an eigenvalue closest to a specific scalar $\sigma$ (e.g., $\sigma = \pi$), standard Power Iteration is insufficient. For this purpose, we utilize a variant known as \textbf{Inverse Iteration with Shift}. This method transforms the spectrum of the matrix so that the desired eigenvalue becomes the dominant one in the transformed problem.
+\paragraph{Why it converges (qualitative).}
+Assume $A$ is diagonalizable with eigenpairs $(\lambda_i,v_i)$ and $|\lambda_1|>|\lambda_2|\ge \cdots$.
+Write the starting vector as a combination of eigenvectors:
+\[
+b_0=\sum_{i=1}^n \alpha_i v_i \quad (\alpha_1\neq 0).
+\]
+Then
+\[
+A^k b_0=\sum_{i=1}^n \alpha_i \lambda_i^k v_i
+=\lambda_1^k\left(\alpha_1 v_1+\sum_{i=2}^n \alpha_i\Big(\frac{\lambda_i}{\lambda_1}\Big)^k v_i\right).
+\]
+As $k$ grows, the ratios $\left(\frac{\lambda_i}{\lambda_1}\right)^k$ shrink toward $0$, so the direction of $A^k b_0$ becomes dominated by $v_1$.
+The convergence speed is governed by the spectral gap; a common rule of thumb is that the directional error shrinks like
+\[
+\left|\frac{\lambda_2}{\lambda_1}\right|^k.
+\]
 
-\subsubsection*{Methodology: Inverse Iteration with Shift}
-Let $A$ be a square matrix. We seek the eigenvalue $\lambda$ of $A$ that minimizes $|\lambda - \sigma|$.
-The method relies on the spectral mapping theorem: if $\lambda$ is an eigenvalue of $A$, then
-\[ \mu = \frac{1}{\lambda - \sigma} \]
-is an eigenvalue of the matrix $(A - \sigma I)^{-1}$.
+\subsection*{Estimating the eigenvalue: Rayleigh quotient}
+Once we have an approximate eigenvector $x$, a natural estimate of its eigenvalue is the \emph{Rayleigh quotient}
+\[
+R(x)=\frac{x^\top A x}{x^\top x}.
+\]
+If $x$ is exactly an eigenvector $v$, then $R(v)=\lambda$ because $v^\top Av=v^\top(\lambda v)=\lambda\, v^\top v$.
+When $x$ is close to an eigenvector, $R(x)$ typically gives a good scalar approximation of the associated eigenvalue, so one can monitor the sequence $R(b_k)$ during power iteration.
 
-Observe that if $\lambda$ is close to $\sigma$, the denominator $\lambda - \sigma$ is small, making the magnitude $|\mu|$ very large. Thus, the eigenvalue of $A$ closest to $\sigma$ corresponds to the dominant eigenvalue of $(A - \sigma I)^{-1}$. We can therefore apply Power Iteration to the matrix $M = (A - \sigma I)^{-1}$ to find this dominant $\mu$, and subsequently recover $\lambda$.
+\subsection*{Targeting an eigenvalue near a chosen number: shift-and-invert (``closest to $\pi$'')}
+Power iteration finds the eigenvalue with largest magnitude, but sometimes we want the eigenvalue \emph{closest} to a target $\mu$ (here $\mu=\pi$).
+The key idea is to transform the problem so that ``closest to $\mu$'' becomes ``dominant in magnitude''.
 
-\subsubsection*{Algorithm Implementation}
-To implement this efficiently, we \textbf{do not} compute the inverse matrix $(A - \sigma I)^{-1}$ explicitly, as this is numerically unstable and costly ($O(n^3)$). Instead, we solve a linear system at each iteration.
+\paragraph{Shifted inverse iteration.}
+Consider the matrix $(A-\mu I)^{-1}$ (assuming $A-\mu I$ is invertible).
+If $Av=\lambda v$, then
+\[
+(A-\mu I)^{-1}v=\frac{1}{\lambda-\mu}\,v.
+\]
+So the eigenvalues of $(A-\mu I)^{-1}$ are $\frac{1}{\lambda_i-\mu}$, with the same eigenvectors as $A$.
+The eigenvalue of $A$ closest to $\mu$ makes $|\lambda_i-\mu|$ smallest, hence $\left|\frac{1}{\lambda_i-\mu}\right|$ largest, becoming dominant for the transformed matrix.
 
-\textbf{Example Goal:} Demonstrate convergence to the eigenvalue closest to $\pi$.
+The iteration is therefore:
+\begin{align*}
+(A-\mu I)y_{k+1} &= b_k,\\
+b_{k+1} &= \frac{y_{k+1}}{\|y_{k+1}\|},\\
+\lambda_{k+1} &= R(b_{k+1}) \quad \text{(optional eigenvalue estimate).}
+\end{align*}
+This is power iteration applied to $(A-\mu I)^{-1}$, implemented by solving a linear system at each step.
 
-\textbf{Procedure:}
-\begin{enumerate}
-    \item \textbf{Initialization}:
-    \begin{itemize}
-        \item Select the shift $\sigma = \pi$.
-        \item Choose an initial guess vector $x^{(0)}$ (randomly generated) with $\|x^{(0)}\|_2 = 1$.
-        \item Set a tolerance $\epsilon$ (e.g., $10^{-6}$).
-    \end{itemize}
-
-    \item \textbf{Iterative Loop} (for $k = 1, 2, \dots$):
-    \begin{enumerate}
-        \item \textbf{Solve Linear System}: Instead of multiplying by inverse, solve for $y^{(k)}$ in:
-        \[ (A - \sigma I) y^{(k)} = x^{(k-1)} \]
-        \textit{Implementation Note:} Pre-compute the LU decomposition of $(A - \sigma I)$ once outside the loop to speed up this step to $O(n^2)$.
-
-        \item \textbf{Normalize}: To prevent overflow/underflow, normalize the vector:
-        \[ x^{(k)} = \frac{y^{(k)}}{\|y^{(k)}\|_2} \]
-
-        \item \textbf{Eigenvalue Estimation}: Compute the Rayleigh Quotient approximation for the eigenvalue of $A$:
-        \[ \lambda^{(k)} = (x^{(k)})^T A x^{(k)} \]
-    \end{enumerate}
-
-    \item \textbf{Termination}: Stop when the residual $\|A x^{(k)} - \lambda^{(k)} x^{(k)}\|_2 < \epsilon$ or when $|\lambda^{(k)} - \lambda^{(k-1)}|$ is sufficiently small.
-\end{enumerate}
-
-\subsubsection*{Convergence}
-The method converges linearly. The rate of convergence is governed by the ratio $|\mu_2|/|\mu_1|$, where $\mu_1$ and $\mu_2$ are the largest and second-largest eigenvalues of $(A-\sigma I)^{-1}$. In terms of the original matrix $A$, this is:
-\[ \text{Rate} \approx \left| \frac{\lambda_{\text{closest}} - \sigma}{\lambda_{\text{second closest}} - \sigma} \right| \]
-Because we chose $\sigma = \pi$ close to a target eigenvalue, this ratio is typically small, ensuring rapid convergence.
-
-
+\paragraph{Demonstration: convergence to the eigenvalue closest to $\pi$.}
+Take a toy example where we can see everything clearly:
+\[
+A=\mathrm{diag}(3.14,\ 1,\ -2),\qquad \mu=\pi\approx 3.14159.
+\]
+The eigenvalues of $A$ are $3.14$, $1$, and $-2$, and the one closest to $\pi$ is $3.14$.
+For the shifted inverse map,
+\[
+(A-\pi I)^{-1}=\mathrm{diag}\!\left(\frac{1}{3.14-\pi},\ \frac{1}{1-\pi},\ \frac{1}{-2-\pi}\right),
+\]
+so the magnitudes are approximately
+\[
+\left|\frac{1}{3.14-\pi}\right|\approx 628,\qquad
+\left|\frac{1}{1-\pi}\right|\approx 0.466,\qquad
+\left|\frac{1}{-2-\pi}\right|\approx 0.241.
+\]
+The dominant term corresponds to the eigenvalue $3.14$, because it is closest to $\pi$.
+Starting from almost any $b_0$ with a nonzero first component, repeated shifted inverse iteration amplifies the first coordinate relative to the others; after normalization, $b_k$ aligns with the eigenvector $e_1$, and the Rayleigh quotient $R(b_k)$ converges to $3.14$.
+This illustrates the general fact: shift-and-invert targets
+\[
+\arg\min_i |\lambda_i-\mu|,
+\]
+so choosing $\mu=\pi$ drives the method toward the eigenvalue of $A$ nearest $\pi$.
 
 \end{document}
