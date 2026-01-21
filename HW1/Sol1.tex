@@ -1,0 +1,67 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{Special Topics in Applied Mathematics I \\ Solution 1}
+\author{XIA JIAHAN}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{Question 1}
+
+\subsection*{Report: Iterative Methods for Eigenvalue Computation}
+
+\subsubsection*{Overview}
+In many practical applications involving large sparse matrices, computing the entire spectrum is computationally expensive and often unnecessary. Instead, iterative methods such as \textbf{Power Iteration} are employed to find specific eigenvalues, typically the one with the largest magnitude (the dominant eigenvalue).
+
+However, when the goal is to find an eigenvalue closest to a specific scalar $\sigma$ (e.g., $\sigma = \pi$), standard Power Iteration is insufficient. For this purpose, we utilize a variant known as \textbf{Inverse Iteration with Shift}. This method transforms the spectrum of the matrix so that the desired eigenvalue becomes the dominant one in the transformed problem.
+
+\subsubsection*{Methodology: Inverse Iteration with Shift}
+Let $A$ be a square matrix. We seek the eigenvalue $\lambda$ of $A$ that minimizes $|\lambda - \sigma|$.
+The method relies on the spectral mapping theorem: if $\lambda$ is an eigenvalue of $A$, then
+\[ \mu = \frac{1}{\lambda - \sigma} \]
+is an eigenvalue of the matrix $(A - \sigma I)^{-1}$.
+
+Observe that if $\lambda$ is close to $\sigma$, the denominator $\lambda - \sigma$ is small, making the magnitude $|\mu|$ very large. Thus, the eigenvalue of $A$ closest to $\sigma$ corresponds to the dominant eigenvalue of $(A - \sigma I)^{-1}$. We can therefore apply Power Iteration to the matrix $M = (A - \sigma I)^{-1}$ to find this dominant $\mu$, and subsequently recover $\lambda$.
+
+\subsubsection*{Algorithm Implementation}
+To implement this efficiently, we \textbf{do not} compute the inverse matrix $(A - \sigma I)^{-1}$ explicitly, as this is numerically unstable and costly ($O(n^3)$). Instead, we solve a linear system at each iteration.
+
+\textbf{Example Goal:} Demonstrate convergence to the eigenvalue closest to $\pi$.
+
+\textbf{Procedure:}
+\begin{enumerate}
+    \item \textbf{Initialization}:
+    \begin{itemize}
+        \item Select the shift $\sigma = \pi$.
+        \item Choose an initial guess vector $x^{(0)}$ (randomly generated) with $\|x^{(0)}\|_2 = 1$.
+        \item Set a tolerance $\epsilon$ (e.g., $10^{-6}$).
+    \end{itemize}
+
+    \item \textbf{Iterative Loop} (for $k = 1, 2, \dots$):
+    \begin{enumerate}
+        \item \textbf{Solve Linear System}: Instead of multiplying by inverse, solve for $y^{(k)}$ in:
+        \[ (A - \sigma I) y^{(k)} = x^{(k-1)} \]
+        \textit{Implementation Note:} Pre-compute the LU decomposition of $(A - \sigma I)$ once outside the loop to speed up this step to $O(n^2)$.
+
+        \item \textbf{Normalize}: To prevent overflow/underflow, normalize the vector:
+        \[ x^{(k)} = \frac{y^{(k)}}{\|y^{(k)}\|_2} \]
+
+        \item \textbf{Eigenvalue Estimation}: Compute the Rayleigh Quotient approximation for the eigenvalue of $A$:
+        \[ \lambda^{(k)} = (x^{(k)})^T A x^{(k)} \]
+    \end{enumerate}
+
+    \item \textbf{Termination}: Stop when the residual $\|A x^{(k)} - \lambda^{(k)} x^{(k)}\|_2 < \epsilon$ or when $|\lambda^{(k)} - \lambda^{(k-1)}|$ is sufficiently small.
+\end{enumerate}
+
+\subsubsection*{Convergence}
+The method converges linearly. The rate of convergence is governed by the ratio $|\mu_2|/|\mu_1|$, where $\mu_1$ and $\mu_2$ are the largest and second-largest eigenvalues of $(A-\sigma I)^{-1}$. In terms of the original matrix $A$, this is:
+\[ \text{Rate} \approx \left| \frac{\lambda_{\text{closest}} - \sigma}{\lambda_{\text{second closest}} - \sigma} \right| \]
+Because we chose $\sigma = \pi$ close to a target eigenvalue, this ratio is typically small, ensuring rapid convergence.
+
+
+
+\end{document}
