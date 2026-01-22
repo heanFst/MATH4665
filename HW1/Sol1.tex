@@ -30,43 +30,44 @@
 
 \section*{Question 1}
 
-\subsection*{Iterative eigenvalue methods: an intuitive story}
-Think of a matrix $A$ as a machine that acts on vectors: it can rotate, shear, and stretch them.
-Most directions are changed in complicated ways, but some special directions come back pointing the same way after applying $A$.
-Those directions are \emph{eigenvectors} $v\neq 0$ satisfying
-\[
-Av=\lambda v,
-\]
-where $\lambda$ is the corresponding \emph{eigenvalue} (the factor by which $A$ stretches $v$).
-When matrices are large, computing all eigenvalues exactly (e.g., from a characteristic polynomial) is impractical and numerically fragile.
-Iterative methods instead exploit one operation we can often do efficiently: repeatedly multiply by $A$ (or solve linear systems involving $A$).
+\subsection*{Introduction to Iterative Eigenvalue Methods}
+Direct methods for computing eigenvalues (based on characteristic polynomials) differ from iterative methods which are necessary for large, sparse matrices where $O(n^3)$ operations are prohibitive. Iterative algorithms typically rely on repeated matrix-vector multiplications to approximate eigenpairs. Beyond the fundamental Power Iteration, several advanced methods exist:
 
-\subsection*{Power iteration: repeated multiplication reveals the dominant direction}
-The simplest method is \emph{power iteration}. Choose any nonzero starting vector $b_0$ and repeat:
+\paragraph{Inverse Iteration.}
+This method applies Power Iteration to the matrix $(A - \mu I)^{-1}$ for some scalar shift $\mu$. Since the eigenvalues of $(A - \mu I)^{-1}$ are $(\lambda_i - \mu)^{-1}$, the algorithm converges to the eigenvector corresponding to the eigenvalue closest to $\mu$. It is particularly effective when a good approximation of an eigenvalue is known.
+
+\paragraph{Rayleigh Quotient Iteration (RQI).}
+RQI extends Inverse Iteration by updating the shift $\mu$ at every step using the Rayleigh quotient of the current iterate: $\mu_k = \frac{b_k^\top A b_k}{b_k^\top b_k}$. This dynamic shifting strategy yields a cubic convergence rate for symmetric matrices, making it extremely fast once it enters the basin of attraction of an eigenvector.
+
+\paragraph{QR Algorithm.}
+For computing all eigenvalues simultaneously, the QR algorithm is the standard choice. It iterates $A_{k+1} = R_k Q_k$ where $A_k = Q_k R_k$ is the QR decomposition. This process creates a sequence of similar matrices that converge to a Schur form (upper triangular), revealing the eigenvalues on the diagonal.
+
+\subsection*{Power Iteration}
+The Power Iteration algorithm is a fundamental iterative method for computing the dominant eigenpair of a matrix $A \in \mathbb{C}^{n \times n}$.
+
+\paragraph{Algorithm.}
+Let $b_0$ be an arbitrary nonzero initial vector. For $k=0, 1, 2, \dots$, we compute:
 \begin{align*}
-c_{k+1} &= Ab_k,\\
-b_{k+1} &= \frac{c_{k+1}}{\|c_{k+1}\|}.
+b_{k+1} = \frac{A b_k}{\|A b_k\|}.
 \end{align*}
-Normalization ``resets the length'' so we can watch the direction. The method tends to align $b_k$ with the eigenvector associated with the eigenvalue of largest magnitude.
+This sequence generates unit vectors that asymptotically align with the dominant eigenvector.
 
-
-
-\paragraph{Why it converges (qualitative).}
-Assume $A$ is diagonalizable with eigenpairs $(\lambda_i,v_i)$ and $|\lambda_1|>|\lambda_2|\ge \cdots$.
-Write the starting vector as a combination of eigenvectors:
+\paragraph{Mathematical Analysis of Convergence.}
+Assume $A$ is diagonalizable with eigenvalues ordered $|\lambda_1| > |\lambda_2| \ge \dots \ge |\lambda_n|$ and corresponding linearly independent eigenvectors $\{v_1, \dots, v_n\}$.
+The initial vector $b_0$ can be expanded in this basis:
 \[
-b_0=\sum_{i=1}^n \alpha_i v_i \quad (\alpha_1\neq 0).
+b_0 = \sum_{i=1}^n c_i v_i.
 \]
-Then
+We assume generalized position, i.e., $c_1 \neq 0$. Applying $A^k$ gives:
 \[
-A^k b_0=\sum_{i=1}^n \alpha_i \lambda_i^k v_i
-=\lambda_1^k\left(\alpha_1 v_1+\sum_{i=2}^n \alpha_i\Big(\frac{\lambda_i}{\lambda_1}\Big)^k v_i\right).
+A^k b_0 = \sum_{i=1}^n c_i \lambda_i^k v_i = \lambda_1^k \left( c_1 v_1 + \sum_{i=2}^n c_i \left( \frac{\lambda_i}{\lambda_1} \right)^k v_i \right).
 \]
-As $k$ grows, the ratios $\left(\frac{\lambda_i}{\lambda_1}\right)^k$ shrink toward $0$, so the direction of $A^k b_0$ becomes dominated by $v_1$.
-The convergence speed is governed by the spectral gap; a common rule of thumb is that the directional error shrinks like
+Let $\tau = |\lambda_2/\lambda_1| < 1$. Then for $i \ge 2$, $|\lambda_i/\lambda_1| \le \tau$.
+The error term behaves as:
 \[
-\left|\frac{\lambda_2}{\lambda_1}\right|^k.
+\left\| \sum_{i=2}^n c_i \left( \frac{\lambda_i}{\lambda_1} \right)^k v_i \right\| = \mathcal{O}(\tau^k).
 \]
+Thus, as $k \to \infty$, the vector $A^k b_0$ is dominated by the component $c_1 v_1$. Since $b_k$ is simply the normalized version of $A^k b_0$, we have $b_k \to \frac{c_1 v_1}{\|c_1 v_1\|}$ (up to a global phase scaling). The convergence rate is linear and governed by the spectral gap ratio $|\lambda_2/\lambda_1|$.
 
 \subsection*{Estimating the eigenvalue: Rayleigh quotient}
 Once we have an approximate eigenvector $x$, a natural estimate of its eigenvalue is the \emph{Rayleigh quotient}
