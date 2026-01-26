@@ -1,0 +1,36 @@
+import numpy as np
+
+def f(x):
+    return np.exp(x)
+
+def g(x):
+    return 1 + x
+
+def main():
+    np.random.seed(42)
+    N = 10000
+    U = np.random.rand(N)
+    Y = f(U)
+    C = g(U)
+    mu_c = 1.5
+
+    # Standard Monte Carlo
+    mc_estimate = np.mean(Y)
+    mc_variance = np.var(Y, ddof=1) / N
+
+    # Control Variates
+    cov_matrix = np.cov(Y, C)
+    c_star = cov_matrix[0, 1] / cov_matrix[1, 1]
+    Y_cv = Y - c_star * (C - mu_c)
+    cv_estimate = np.mean(Y_cv)
+    cv_variance = np.var(Y_cv, ddof=1) / N
+
+    print(f"Standard Monte Carlo Estimate: {mc_estimate:.6f}")
+    print(f"Standard MC Variance: {mc_variance:.10f}")
+    print("-" * 30)
+    print(f"Control Variates Estimate: {cv_estimate:.6f}")
+    print(f"Control Variates Variance: {cv_variance:.10f}")
+    print(f"Variance Reduction Factor: {mc_variance / cv_variance:.2f}x")
+
+if __name__ == "__main__":
+    main()
