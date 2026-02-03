@@ -1,13 +1,13 @@
 # Fdb version 4
-["xdvipdfmx"] 1770120547 "Sol1.xdv" "Sol1.pdf" "Sol1" 1770120548 0
-  "Sol1.xdv" 1770120547 106956 6457c4b2ecd635c7695fa7a0696d3d8e "xelatex"
+["xdvipdfmx"] 1770121454 "Sol1.xdv" "Sol1.pdf" "Sol1" 1770121457 0
+  "Sol1.xdv" 1770121454 158644 2cb746acf3c5fe5783850af1d2e1f455 "xelatex"
   (generated)
   "Sol1.pdf"
   (rewritten before read)
-["xelatex"] 1770120541 "d:/文档/MATH4665/HW1/Sol1.tex" "Sol1.xdv" "Sol1" 1770120548 0
-  "Sol1.aux" 1770120547 1529 7a72c6b669bd8023fe5874887a325d49 "xelatex"
-  "Sol1.out" 1770120547 175 438ecf26860b2f003f0a3df8ab90cecd "xelatex"
-  "Sol1.tex" 1769585065 11945 2cb716a9224bd01688df4feaa636e800 ""
+["xelatex"] 1770121449 "d:/文档/MATH4665/HW1/Sol1.tex" "Sol1.xdv" "Sol1" 1770121457 0
+  "Sol1.aux" 1770121454 2880 611bd55e14147523a5765bc53b34757a "xelatex"
+  "Sol1.out" 1770121454 175 438ecf26860b2f003f0a3df8ab90cecd "xelatex"
+  "Sol1.tex" 1770121443 17764 f3c3391c6cb5a4d3bce2024b8663097d ""
   "d:/texlive/2023/texmf-dist/fonts/map/fontname/texfonts.map" 1687010835 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "d:/texlive/2023/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1687012439 1528 7e12f4c0fcf5a072cebdcfbfc610f54c ""
   "d:/texlive/2023/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1687010454 1004 54797486969f23fa377b128694d548df ""
@@ -60,9 +60,13 @@
   "d:/texlive/2023/texmf-dist/tex/latex/base/ts1cmr.fd" 1687011516 2430 8418b3f1835e588625becbcac4dbce56 ""
   "d:/texlive/2023/texmf-dist/tex/latex/geometry/geometry.sty" 1687010864 41601 9cf6c5257b1bc7af01a58859749dd37a ""
   "d:/texlive/2023/texmf-dist/tex/latex/graphics-cfg/color.cfg" 1687010955 1213 620bba36b25224fa9b7e1ccb4ecb76fd ""
+  "d:/texlive/2023/texmf-dist/tex/latex/graphics-cfg/graphics.cfg" 1687010955 1224 978390e9c2234eab29404bc21b268d1e ""
   "d:/texlive/2023/texmf-dist/tex/latex/graphics-def/xetex.def" 1687010955 14788 1dde73f396dd97d88c838bee2a352abe ""
+  "d:/texlive/2023/texmf-dist/tex/latex/graphics/graphics.sty" 1687010953 18387 8f900a490197ebaf93c02ae9476d4b09 ""
+  "d:/texlive/2023/texmf-dist/tex/latex/graphics/graphicx.sty" 1687010953 8010 a8d949cbdbc5c983593827c9eec252e1 ""
   "d:/texlive/2023/texmf-dist/tex/latex/graphics/keyval.sty" 1687010953 2671 7e67d78d9b88c845599a85b2d41f2e39 ""
   "d:/texlive/2023/texmf-dist/tex/latex/graphics/mathcolor.ltx" 1687010953 2885 9c645d672ae17285bba324998918efd8 ""
+  "d:/texlive/2023/texmf-dist/tex/latex/graphics/trig.sty" 1687010953 4023 293ea1c16429fc0c4cf605f4da1791a9 ""
   "d:/texlive/2023/texmf-dist/tex/latex/hycolor/hycolor.sty" 1687011129 17914 4c28a13fc3d975e6e81c9bea1d697276 ""
   "d:/texlive/2023/texmf-dist/tex/latex/hyperref/hxetex.def" 1687011136 44472 a079d09fb6a7034a730c6d56a4fe1267 ""
   "d:/texlive/2023/texmf-dist/tex/latex/hyperref/hyperref.sty" 1687011136 223129 4edf043af471f3251c66e432cfa22987 ""
@@ -84,7 +88,9 @@
   "d:/texlive/2023/texmf-dist/web2c/texmf.cnf" 1687010426 40745 87bb86a62d462f93a1efc6b0c65c872e ""
   "d:/texlive/2023/texmf-var/web2c/xetex/xelatex.fmt" 1687012524 10502577 1a4b7fa565c6e38087537c7bb82400bc ""
   "d:/texlive/2023/texmf.cnf" 1687012448 713 e69b156964470283e0530f5060668171 ""
-  "d:/文档/MATH4665/HW1/Sol1.tex" 1769585065 11945 2cb716a9224bd01688df4feaa636e800 ""
+  "d:/文档/MATH4665/HW1/Sol1.tex" 1770121443 17764 f3c3391c6cb5a4d3bce2024b8663097d ""
+  "mc_convergence_rate.png" 1770121301 310976 c5246b6aec6ad373eae6b09c21b9f116 ""
+  "mc_pi_darts.png" 1770121301 302302 52a4a1f52b9341c6f939f45b6df8b946 ""
   (generated)
   "Sol1.aux"
   "Sol1.log"

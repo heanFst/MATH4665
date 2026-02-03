@@ -4,6 +4,7 @@
 \usepackage{hyperref}
 \usepackage{listings}
 \usepackage{xcolor}
+\usepackage{graphicx}
 
 \geometry{margin=1in}
 
@@ -31,7 +32,21 @@
 \section*{Question 1}
 
 \subsection*{Introduction to Iterative Eigenvalue Methods}
-Direct methods for computing eigenvalues (based on characteristic polynomials) differ from iterative methods which are necessary for large, sparse matrices where $O(n^3)$ operations are prohibitive. Iterative algorithms typically rely on repeated matrix-vector multiplications to approximate eigenpairs. Beyond the fundamental Power Iteration, several advanced methods exist:
+The computation of eigenvalues and eigenvectors is a cornerstone of numerical linear algebra. While "direct" methods exist, they become impractical or theoretically impossible under several critical conditions. We must transition to iterative methods in the following scenarios:
+
+\paragraph{1. High Dimensionality and Computational Complexity.}
+Traditional direct methods, such as the QR algorithm for a full matrix, typically require $O(n^3)$ floating-point operations. For modern applications where $n$ can exceed $10^5$ or $10^6$ (e.g., Google's PageRank or structural analysis), the cubic growth in complexity makes direct computation computationally infeasible on any current hardware.
+
+\paragraph{2. Memory Constraints and Sparsity.}
+Storing a dense $n \times n$ matrix requires $O(n^2)$ memory. A matrix with $n=10^5$ would require roughly 80 GB of RAM just for storage in double precision. However, many large-scale matrices are \emph{sparse} (containing mostly zeros). Direct methods like LU or QR decomposition often suffer from ``fill-in,'' where zero entries become non-zero during the process, destroying the sparsity and exhausting memory. Iterative methods are ``matrix-free'' in the sense that they only require the ability to compute the matrix-vector product $Ax$, which can be done in $O(\text{nnz})$ time and space, where $\text{nnz}$ is the number of non-zero elements.
+
+\paragraph{3. The Abel-Ruffini Theorem.}
+From a theoretical standpoint, the eigenvalues of a matrix $A$ are the roots of its characteristic polynomial $p(\lambda) = \det(A - \lambda I)$. The Abel-Ruffini theorem states that there is no general algebraic solution (using radicals) for polynomials of degree $n \ge 5$. Consequently, any algorithm for finding eigenvalues of matrices larger than $4 \times 4$ must fundamentally be an iterative process that converges to the roots.
+
+\paragraph{4. Partial Spectrum Requirements.}
+In many engineering and data science problems, we do not need the entire spectrum (all $n$ eigenvalues). For instance, in Principal Component Analysis (PCA), we only care about the few largest eigenvalues. Direct methods are wasteful as they compute the full set of eigenvalues. Iterative methods like Power Iteration or Lanczos methods allow us to ``target'' specific parts of the spectrum, such as the dominant or smallest eigenvalues, with far less work.
+
+Beyond the fundamental Power Iteration, several advanced methods exist:
 
 \paragraph{Inverse Iteration.}
 This method applies Power Iteration to the matrix $(A - \mu I)^{-1}$ for some scalar shift $\mu$. Since the eigenvalues of $(A - \mu I)^{-1}$ are $(\lambda_i - \mu)^{-1}$, the algorithm converges to the eigenvector corresponding to the eigenvalue closest to $\mu$. It is particularly effective when a good approximation of an eigenvalue is known.
@@ -69,44 +84,77 @@ The error term behaves as:
 \]
 Thus, as $k \to \infty$, the vector $A^k b_0$ is dominated by the component $c_1 v_1$. Since $b_k$ is simply the normalized version of $A^k b_0$, we have $b_k \to \frac{c_1 v_1}{\|c_1 v_1\|}$ (up to a global phase scaling). The convergence rate is linear and governed by the spectral gap ratio $|\lambda_2/\lambda_1|$.
 
-\subsection*{Estimating the eigenvalue: Rayleigh quotient}
-Once we have an approximate eigenvector $x$, a natural estimate of its eigenvalue is the \emph{Rayleigh quotient}
-\[
-R(x)=\frac{x^\top A x}{x^\top x}.
-\]
-If $x$ is exactly an eigenvector $v$, then $R(v)=\lambda$ because $v^\top Av=v^\top(\lambda v)=\lambda\, v^\top v$.
-When $x$ is close to an eigenvector, $R(x)$ typically gives a good scalar approximation of the associated eigenvalue, so one can monitor the sequence $R(b_k)$ during power iteration.
+\subsection*{Targeting Interior Eigenvalues: Shift-and-Invert}
+Traditional Power Iteration is limited to finding the eigenvalue with the largest absolute magnitude. In many practical cases, however, we are interested in an "interior" eigenvalue—one that is not the largest or smallest, but is located near a specific value $\mu$ (the shift). To find the eigenvalue closest to $\mu = \pi$, we must transform the matrix.
 
-\paragraph{Example:} Consider a diagonal matrix with an irrational eigenvalue:
+\paragraph{Mathematical Transformation.}
+If $\lambda$ is an eigenvalue of $A$ with eigenvector $v$, then:
+\begin{enumerate}
+    \item $(\lambda - \mu)$ is an eigenvalue of $(A - \mu I)$.
+    \item $\frac{1}{\lambda - \mu}$ is an eigenvalue of $(A - \mu I)^{-1}$.
+\end{enumerate}
+By choosing $\mu$ close to our target eigenvalue $\lambda_i$, the term $\frac{1}{\lambda_i - \mu}$ becomes very large, making it the dominant eigenvalue of the transformed matrix $B = (A - \mu I)^{-1}$. Power Iteration applied to $B$ will then converge to the eigenvector $v_i$.
+
+\paragraph{Example: Finding $\pi$ among larger eigenvalues.} 
+Consider a matrix $A$ where the dominant eigenvalue is 100, but we want to find the one closest to $\mu = 3.14$:
 \[
-M = \begin{pmatrix} \pi & 0 \\ 0 & 1 \end{pmatrix}, \quad \lambda_1 = \pi \approx 3.14159.
+A = \begin{pmatrix} 100 & 0 \\ 0 & \pi \end{pmatrix}, \quad \text{eigenvalues: } \lambda_1 = 100, \lambda_2 = \pi \approx 3.14159.
 \]
-Let's estimate $\lambda_1$ using power iteration starting with $x_0 = (1, 1)^\top$. The Rayleigh quotient $R(x_k)$ provides the estimate at each step.
+Standard Power Iteration would immediately converge to $\lambda_1 = 100$. To find $\lambda_2 \approx \pi$, we apply the shift-and-invert strategy with $\mu = 3.1$:
 \begin{itemize}
-    \item \textbf{Step 0:} $x_0 = (1, 1)^\top$.
-    \[
-    R(x_0) = \frac{1\cdot \pi + 1\cdot 1}{1 + 1} = \frac{\pi + 1}{2} \approx 2.0708.
-    \]
-    \item \textbf{Step 1:} $x_1 = M x_0 = (\pi, 1)^\top$.
-    \[
-    R(x_1) = \frac{\pi^3 + 1}{\pi^2 + 1} \approx \frac{31.006 + 1}{9.870 + 1} \approx 2.9446.
-    \]
-    \item \textbf{Step 2:} $x_2 = M x_1 = (\pi^2, 1)^\top$.
-    \[
-    R(x_2) = \frac{\pi^5 + 1}{\pi^4 + 1} \approx \frac{306.02 + 1}{97.41 + 1} \approx 3.1198.
-    \]
-    \item \textbf{Step 3:} $x_3 = M x_2 = (\pi^3, 1)^\top$.
-    \[
-    R(x_3) = \frac{\pi^7 + 1}{\pi^6 + 1} \approx \frac{3020.29 + 1}{961.39 + 1} \approx 3.1394.
-    \]
+    \item The transformed eigenvalue for $\lambda_1$ is $\frac{1}{100 - 3.1} \approx 0.0103$.
+    \item The transformed eigenvalue for $\lambda_2$ is $\frac{1}{3.14159 - 3.1} \approx \frac{1}{0.04159} \approx 24.044$.
 \end{itemize}
-After three steps, the estimate $3.1394$ is very close to $\pi \approx 3.1416$.
+In the transformed system, the eigenvalue corresponding to $\pi$ is now $\sim 2300$ times larger than the one for $100$. This ensures extremely rapid convergence to the interior eigenvalue $\pi$.
+
+\paragraph{Algorithm: Inverse Iteration with Shift.}
+Let $\mu$ be the target shift. For an initial vector $b_0$:
+\begin{align*}
+(A - \mu I) w_{k+1} &= b_k \\
+b_{k+1} &= \frac{w_{k+1}}{\|w_{k+1}\|}
+\end{align*}
+The Rayleigh quotient $R(b_k)$ of the original matrix $A$ will then converge to the eigenvalue closest to $\mu$.
 
 
 \section*{Question 2}
 
+\subsection*{The Philosophy of Monte Carlo Methods}
+The core idea of Monte Carlo (MC) methods is to solve deterministic problems by using randomness. Instead of seeking a direct analytical or numerical solution, we construct a probabilistic model such that the quantity of interest (e.g., an integral, a probability, or a physical constant) is the \emph{expected value} of a random variable. By simulating this model and taking the average of many independent trials, we can approximate the true value with high precision.
+
+\paragraph{A Classic Example: Estimating $\pi$.}
+To illustrate this philosophy, consider the task of estimating the value of $\pi$. While $\pi$ is a deterministic constant, we can estimate it using a stochastic "dart-throwing" experiment:
+\begin{enumerate}
+    \item Imagine a circle with radius $r=1$ inscribed in a square with side length $L=2$.
+    \item The area of the square is $A_{sq} = 2^2 = 4$, and the area of the circle is $A_{cir} = \pi(1)^2 = \pi$.
+    \item If we pick a point $(x, y)$ uniformly at random from the square, the probability $P$ that the point falls inside the circle is the ratio of their areas:
+    \[
+    P(\text{inside circle}) = \frac{A_{cir}}{A_{sq}} = \frac{\pi}{4}.
+    \]
+    \item By generating $N$ random points and counting how many ($N_{in}$) fall inside the circle (where $x^2 + y^2 \le 1$), we can estimate $\pi$ as:
+    \[
+    \hat{\pi} \approx 4 \times \frac{N_{in}}{N}.
+    \]
+\end{enumerate}
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{mc_pi_darts.png}
+    \caption{Visualizing the Monte Carlo "Dart Throwing"}
+\end{figure}
+
+This example perfectly captures the MC spirit: we transform a geometric/deterministic problem into a counting problem based on random sampling.
+
+\subsection*{General Applications and Use Cases}
+While often associated with integration, Monte Carlo methods are a broad family of algorithms used across various domains:
+\begin{itemize}
+    \item \textbf{Simulation of Physical Systems:} In statistical mechanics, MC is used to simulate the behavior of complex molecular systems where calculating the partition function is impossible.
+    \item \textbf{Financial Engineering:} Pricing complex derivatives and assessing risk (Value at Risk) often requires simulating thousands of possible market paths.
+    \item \textbf{Optimization:} Algorithms like Simulated Annealing use stochastic "jumps" to escape local minima in high-dimensional optimization problems.
+    \item \textbf{Probabilistic Inference:} In machine learning, Markov Chain Monte Carlo (MCMC) allows for sampling from posterior distributions in Bayesian models that cannot be computed directly.
+\end{itemize}
+
 \subsection*{Mathematical Foundation of Monte Carlo Integration}
-Monte Carlo (MC) methods provide a stochastic framework for approximating high-dimensional integrals that are analytically intractable. Consider the problem of evaluating the integral of a function $f: \Omega \to \mathbb{R}$ over a domain $\Omega \subset \mathbb{R}^d$:
+In the specific context of integration, MC methods provide a stochastic framework for approximating high-dimensional integrals that are analytically intractable. Consider the problem of evaluating the integral of a function $f: \Omega \to \mathbb{R}$ over a domain $\Omega \subset \mathbb{R}^d$:
 \[
 I = \int_{\Omega} f(x) \, dx.
 \]
@@ -130,6 +178,12 @@ The convergence of $\hat{I}_N$ to $I$ is guaranteed by the \emph{Law of Large Nu
 \sqrt{N}(\hat{I}_N - I) \xrightarrow{d} \mathcal{N}(0, \sigma^2), \quad \text{where } \sigma^2 = \text{Var}\left( \frac{f(X)}{p(X)} \right).
 \]
 Consequently, the probabilistic error bound is $O(\sigma/\sqrt{N})$. This rate is independent of the dimension $d$, which is the primary advantage of Monte Carlo methods over deterministic quadrature rules (e.g., Simpson's rule), where the error scales as $O(N^{-k/d})$ and suffers from the ``curse of dimensionality.''
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{mc_convergence_rate.png}
+    \caption{The convergence of the Monte Carlo estimator follows the theoretical $O(1/\sqrt{N})$ rate. Note the logarithmic scale: gaining one digit of precision requires a 100-fold increase in samples.}
+\end{figure}
 
 \subsection*{The Necessity of Variance Reduction}
 The $O(N^{-1/2})$ convergence rate implies that to gain one additional decimal digit of accuracy (a 10-fold error reduction), the sample size $N$ must be increased by a factor of 100. For complex simulations where each function evaluation is computationally expensive, this requirement is often prohibitive.
