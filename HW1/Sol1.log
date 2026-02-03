@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.6.17)  3 FEB 2026 20:24
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.6.17)  3 FEB 2026 20:37
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -378,36 +378,42 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 File: mc_pi_darts.png Graphic file (type bmp)
 <mc_pi_darts.png>
  [4] [5]
+File: mc_ex_integration.png Graphic file (type bmp)
+<mc_ex_integration.png>
+File: mc_clt_distribution.png Graphic file (type bmp)
+<mc_clt_distribution.png>
 File: mc_convergence_rate.png Graphic file (type bmp)
 <mc_convergence_rate.png>
- [6]
-Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 196.
- [7] [8]
-Overfull \hbox (6.08092pt too wide) in paragraph at lines 284--284
+ [6] [7]
+File: mc_variance_reduction.png Graphic file (type bmp)
+<mc_variance_reduction.png>
+Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 225.
+ [8] [9]
+Overfull \hbox (6.08092pt too wide) in paragraph at lines 313--313
 []\TU/lmtt/m/n/12 USER: in question2, d:\file\MATH4665\HW1\Sol1.tex, describe the algorithms of[] 
  []
 
 
-Overfull \hbox (12.28493pt too wide) in paragraph at lines 284--284
+Overfull \hbox (12.28493pt too wide) in paragraph at lines 313--313
 []\TU/lmtt/m/n/12 ASSISTANT: [Added comprehensive Monte Carlo description including definitions,[] 
  []
 
 
-Overfull \hbox (6.10486pt too wide) in paragraph at lines 284--284
+Overfull \hbox (6.10486pt too wide) in paragraph at lines 313--313
 []           \TU/lmtt/m/n/12 source code and its numerical execution output into the document.][] 
  []
 
-[9] (./Sol1.aux)
+[10] (./Sol1.aux)
 Package rerunfilecheck Info: File `Sol1.out' has not changed.
 (rerunfilecheck)             Checksum: 438ECF26860B2F003F0A3DF8AB90CECD;175.
  ) 
 Here is how much of TeX's memory you used:
- 11609 strings out of 476683
- 178153 string characters out of 5807575
- 1960012 words of memory out of 5000000
- 31698 multiletter control sequences out of 15000+600000
+ 11633 strings out of 476683
+ 178810 string characters out of 5807575
+ 2025012 words of memory out of 5000000
+ 31719 multiletter control sequences out of 15000+600000
  519995 words of font info for 75 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 72i,11n,76p,708b,1906s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 72i,11n,76p,708b,1900s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on Sol1.xdv (9 pages, 158644 bytes).
+Output written on Sol1.xdv (10 pages, 164980 bytes).

@@ -154,41 +154,70 @@ While often associated with integration, Monte Carlo methods are a broad family 
 \end{itemize}
 
 \subsection*{Mathematical Foundation of Monte Carlo Integration}
-In the specific context of integration, MC methods provide a stochastic framework for approximating high-dimensional integrals that are analytically intractable. Consider the problem of evaluating the integral of a function $f: \Omega \to \mathbb{R}$ over a domain $\Omega \subset \mathbb{R}^d$:
+The mathematical basis of Monte Carlo integration lies in the Law of Large Numbers and the Central Limit Theorem.
+
+\paragraph{1. General Theorem and Formulation.}
+Consider the problem of evaluating a multi-dimensional integral $I$ of a function $f$ over a domain $\Omega \subset \mathbb{R}^d$:
 \[
 I = \int_{\Omega} f(x) \, dx.
 \]
-By introducing a probability density function $p(x)$ that is strictly positive on $\Omega$, we can reformulate $I$ as an expectation:
+By introducing a probability density function $p(x)$ that is strictly positive on $\Omega$, we can reformulate $I$ as an expectation of a random variable:
 \[
-I = \int_{\Omega} \frac{f(x)}{p(x)} p(x) \, dx = \mathbb{E}\left[ \frac{f(X)}{p(X)} \right],
+I = \int_{\Omega} \frac{f(x)}{p(x)} p(x) \, dx = \mathbb{E}\left[ \frac{f(X)}{p(X)} \right], \quad X \sim p(x).
 \]
-where $X$ is a random variable with density $p$. This transformation allows the use of statistical sampling to estimate the value of the integral.
-
-\subsection*{The Estimator and its Statistical Properties}
 Given $N$ independent and identically distributed (i.i.d.) samples $\{X_i\}_{i=1}^N$ drawn from $p(x)$, the Monte Carlo estimator $\hat{I}_N$ is defined as the sample mean:
 \[
 \hat{I}_N = \frac{1}{N} \sum_{i=1}^N \frac{f(X_i)}{p(X_i)}.
 \]
-The estimator is \emph{unbiased}, meaning its expected value equals the true integral $I$. This follows from the linearity of expectation:
+The \emph{Strong Law of Large Numbers} ensures that $\hat{I}_N$ converges almost surely to $I$ as $N \to \infty$. Furthermore, the \emph{Central Limit Theorem} (CLT) provides the asymptotic distribution of the error:
 \[
-\mathbb{E}[\hat{I}_N] = \mathbb{E}\left[ \frac{1}{N} \sum_{i=1}^N \frac{f(X_i)}{p(X_i)} \right] = \frac{1}{N} \sum_{i=1}^N \mathbb{E}\left[ \frac{f(X_i)}{p(X_i)} \right] = \frac{1}{N} \sum_{i=1}^N I = I.
+\hat{I}_N \xrightarrow{d} \mathcal{N}\left(I, \frac{\sigma^2}{N}\right), \quad \text{where } \sigma^2 = \text{Var}\left( \frac{f(X)}{p(X)} \right).
 \]
-The convergence of $\hat{I}_N$ to $I$ is guaranteed by the \emph{Law of Large Numbers} (LLN). The \emph{Strong Law of Large Numbers} states that the sample average converges almost surely to the expected value as $N \to \infty$, ensuring that the estimator is consistent. While the LLN guarantees convergence, the Central Limit Theorem (CLT) provides the asymptotic distribution of the error:
+This implies that the probabilistic error bound is $O(\sigma/\sqrt{N})$, a rate that is remarkably independent of the dimension $d$.
+
+\paragraph{2. Application Example: $f(x) = e^x$.}
+To illustrate these theorems, consider the integral of $f(x) = e^x$ over the domain $\Omega = [0, 1]$ using a uniform density $p(x) = 1$:
 \[
-\sqrt{N}(\hat{I}_N - I) \xrightarrow{d} \mathcal{N}(0, \sigma^2), \quad \text{where } \sigma^2 = \text{Var}\left( \frac{f(X)}{p(X)} \right).
+I = \int_{0}^{1} e^x \, dx = e - 1 \approx 1.71828.
 \]
-Consequently, the probabilistic error bound is $O(\sigma/\sqrt{N})$. This rate is independent of the dimension $d$, which is the primary advantage of Monte Carlo methods over deterministic quadrature rules (e.g., Simpson's rule), where the error scales as $O(N^{-k/d})$ and suffers from the ``curse of dimensionality.''
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{mc_ex_integration.png}
+    \caption{Visualizing Monte Carlo integration for $f(x) = e^x$. The integral is approximated by the average height of the random samples (blue points) distributed across the domain.}
+\end{figure}
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{mc_clt_distribution.png}
+    \caption{The distribution of the MC estimator $\hat{I}_N$ for $e^x$ over many trials. As predicted by the CLT, the estimates cluster around the true value $I \approx 1.7183$ following a Gaussian bell curve.}
+\end{figure}
 
 \begin{figure}[ht!]
     \centering
     \includegraphics[width=0.7\textwidth]{mc_convergence_rate.png}
-    \caption{The convergence of the Monte Carlo estimator follows the theoretical $O(1/\sqrt{N})$ rate. Note the logarithmic scale: gaining one digit of precision requires a 100-fold increase in samples.}
+    \caption{The convergence of the Monte Carlo estimator follows the theoretical $O(1/\sqrt{N})$ rate. Gaining one digit of precision requires a 100-fold increase in samples.}
 \end{figure}
 
 \subsection*{The Necessity of Variance Reduction}
 The $O(N^{-1/2})$ convergence rate implies that to gain one additional decimal digit of accuracy (a 10-fold error reduction), the sample size $N$ must be increased by a factor of 100. For complex simulations where each function evaluation is computationally expensive, this requirement is often prohibitive.
 
-Variance reduction techniques are essential to improve computational efficiency by decreasing the constant $\sigma$ in the error term without altering the expectation $I$. By strategically choosing $p(x)$ (Importance Sampling), exploiting correlations (Antithetic Variates), or utilizing auxiliary information (Control Variates), one can achieve the desired precision with significantly fewer samples, effectively making the stochastic approach viable for high-precision scientific computing.
+Variance reduction techniques are essential to improve computational efficiency by decreasing the constant $\sigma$ in the error term without altering the expectation $I$. 
+
+\paragraph{Comparison: Standard MC vs. Control Variates.}
+To demonstrate this, consider our example $f(x) = e^x$ with the control variate $g(x) = 1+x$. While both estimators target the same true value $I \approx 1.7183$, their variances differ drastically:
+\begin{itemize}
+    \item \textbf{Standard MC:} The variance is $\text{Var}(e^X)$, which leads to a wider distribution of estimates.
+    \item \textbf{Control Variates:} By exploiting the high correlation between $e^x$ and $1+x$, we construct an estimator with significantly lower variance, resulting in a much tighter distribution around the true value.
+\end{itemize}
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{mc_variance_reduction.png}
+    \caption{Comparing the distributions of the Standard Monte Carlo estimator and the Control Variates estimator. The Control Variates method (orange) produces a much narrower peak, indicating significantly higher precision for the same number of samples.}
+\end{figure}
+
+By strategically choosing $p(x)$ (Importance Sampling), exploiting correlations (Antithetic Variates), or utilizing auxiliary information (Control Variates), one can achieve the desired precision with significantly fewer samples, effectively making the stochastic approach viable for high-precision scientific computing.
 
 \subsection*{Numerical Implementation: Control Variates}
 To demonstrate the efficiency of variance reduction, we implemented a Monte Carlo simulation in Python. The script estimates the integral of $f(x) = e^x$ on $[0,1]$ using $g(x) = 1+x$ as a control variate.

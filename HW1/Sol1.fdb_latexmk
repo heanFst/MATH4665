@@ -1,13 +1,13 @@
 # Fdb version 4
-["xdvipdfmx"] 1770121454 "Sol1.xdv" "Sol1.pdf" "Sol1" 1770121457 0
-  "Sol1.xdv" 1770121454 158644 2cb746acf3c5fe5783850af1d2e1f455 "xelatex"
+["xdvipdfmx"] 1770122254 "Sol1.xdv" "Sol1.pdf" "Sol1" 1770122258 0
+  "Sol1.xdv" 1770122254 164980 c654de244246c65da7f340880a3575ae "xelatex"
   (generated)
   "Sol1.pdf"
   (rewritten before read)
-["xelatex"] 1770121449 "d:/文档/MATH4665/HW1/Sol1.tex" "Sol1.xdv" "Sol1" 1770121457 0
-  "Sol1.aux" 1770121454 2880 611bd55e14147523a5765bc53b34757a "xelatex"
-  "Sol1.out" 1770121454 175 438ecf26860b2f003f0a3df8ab90cecd "xelatex"
-  "Sol1.tex" 1770121443 17764 f3c3391c6cb5a4d3bce2024b8663097d ""
+["xelatex"] 1770122248 "d:/文档/MATH4665/HW1/Sol1.tex" "Sol1.xdv" "Sol1" 1770122258 0
+  "Sol1.aux" 1770122254 4175 6a1e0789178c6d0c829f039ce71871c9 "xelatex"
+  "Sol1.out" 1770122254 175 438ecf26860b2f003f0a3df8ab90cecd "xelatex"
+  "Sol1.tex" 1770122214 18771 403fee76ec0e0e37ae28318b8cf45332 ""
   "d:/texlive/2023/texmf-dist/fonts/map/fontname/texfonts.map" 1687010835 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "d:/texlive/2023/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1687012439 1528 7e12f4c0fcf5a072cebdcfbfc610f54c ""
   "d:/texlive/2023/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1687010454 1004 54797486969f23fa377b128694d548df ""
@@ -88,9 +88,12 @@
   "d:/texlive/2023/texmf-dist/web2c/texmf.cnf" 1687010426 40745 87bb86a62d462f93a1efc6b0c65c872e ""
   "d:/texlive/2023/texmf-var/web2c/xetex/xelatex.fmt" 1687012524 10502577 1a4b7fa565c6e38087537c7bb82400bc ""
   "d:/texlive/2023/texmf.cnf" 1687012448 713 e69b156964470283e0530f5060668171 ""
-  "d:/文档/MATH4665/HW1/Sol1.tex" 1770121443 17764 f3c3391c6cb5a4d3bce2024b8663097d ""
+  "d:/文档/MATH4665/HW1/Sol1.tex" 1770122214 18771 403fee76ec0e0e37ae28318b8cf45332 ""
+  "mc_clt_distribution.png" 1770122200 141575 4d07e08688bc5be22d0d5803d5eae8f3 ""
   "mc_convergence_rate.png" 1770121301 310976 c5246b6aec6ad373eae6b09c21b9f116 ""
+  "mc_ex_integration.png" 1770122199 187887 b6b3dc818c8bbc64080eda37867a6bcf ""
   "mc_pi_darts.png" 1770121301 302302 52a4a1f52b9341c6f939f45b6df8b946 ""
+  "mc_variance_reduction.png" 1770122200 105813 462c4d91c058cbe7d1a25bf01f31dd17 ""
   (generated)
   "Sol1.aux"
   "Sol1.log"
