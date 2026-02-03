@@ -121,7 +121,11 @@ Given $N$ independent and identically distributed (i.i.d.) samples $\{X_i\}_{i=1
 \[
 \hat{I}_N = \frac{1}{N} \sum_{i=1}^N \frac{f(X_i)}{p(X_i)}.
 \]
-The estimator is \emph{unbiased}, meaning $\mathbb{E}[\hat{I}_N] = I$. Its convergence is guaranteed by the Law of Large Numbers (LLN), while the Central Limit Theorem (CLT) provides the asymptotic distribution of the error:
+The estimator is \emph{unbiased}, meaning its expected value equals the true integral $I$. This follows from the linearity of expectation:
+\[
+\mathbb{E}[\hat{I}_N] = \mathbb{E}\left[ \frac{1}{N} \sum_{i=1}^N \frac{f(X_i)}{p(X_i)} \right] = \frac{1}{N} \sum_{i=1}^N \mathbb{E}\left[ \frac{f(X_i)}{p(X_i)} \right] = \frac{1}{N} \sum_{i=1}^N I = I.
+\]
+The convergence of $\hat{I}_N$ to $I$ is guaranteed by the \emph{Law of Large Numbers} (LLN). The \emph{Strong Law of Large Numbers} states that the sample average converges almost surely to the expected value as $N \to \infty$, ensuring that the estimator is consistent. While the LLN guarantees convergence, the Central Limit Theorem (CLT) provides the asymptotic distribution of the error:
 \[
 \sqrt{N}(\hat{I}_N - I) \xrightarrow{d} \mathcal{N}(0, \sigma^2), \quad \text{where } \sigma^2 = \text{Var}\left( \frac{f(X)}{p(X)} \right).
 \]

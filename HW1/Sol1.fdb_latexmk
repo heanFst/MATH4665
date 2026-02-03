@@ -1,8 +1,8 @@
 # Fdb version 4
-["pdflatex"] 1769409364 "d:/文档/MATH4665/HW1/Sol1.tex" "Sol1.pdf" "Sol1" 1769409365 0
-  "Sol1.aux" 1769409365 1563 47d4fc0596aee095c54043bd9543c4a2 "pdflatex"
-  "Sol1.out" 1769409365 175 438ecf26860b2f003f0a3df8ab90cecd "pdflatex"
-  "Sol1.tex" 1769409362 11424 af0dbac5cd2941d042e63a5640c0fa9c ""
+["pdflatex"] 1769574737 "d:/文档/MATH4665/HW1/Sol1.tex" "Sol1.pdf" "Sol1" 1769574738 0
+  "Sol1.aux" 1769574738 1563 15ef1efeb5c657537e04a7150df78931 "pdflatex"
+  "Sol1.out" 1769574738 175 438ecf26860b2f003f0a3df8ab90cecd "pdflatex"
+  "Sol1.tex" 1769574717 11945 2cb716a9224bd01688df4feaa636e800 ""
   "d:/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1687010620 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "d:/texlive/2023/texmf-dist/fonts/map/fontname/texfonts.map" 1687010835 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "d:/texlive/2023/texmf-dist/fonts/tfm/jknappen/ec/tcrm1200.tfm" 1687010742 1536 74b7293ec3713bb7fdca8dd1bd1f469c ""
@@ -103,7 +103,7 @@
   "d:/texlive/2023/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1687012462 4662804 0cdd15146f76740ec2a30e55c6cffc38 ""
   "d:/texlive/2023/texmf-var/web2c/pdftex/pdflatex.fmt" 1687012532 7883464 8073704bf1ecf333c68b76fd1d1ce99f ""
   "d:/texlive/2023/texmf.cnf" 1687012448 713 e69b156964470283e0530f5060668171 ""
-  "d:/文档/MATH4665/HW1/Sol1.tex" 1769409362 11424 af0dbac5cd2941d042e63a5640c0fa9c ""
+  "d:/文档/MATH4665/HW1/Sol1.tex" 1769574717 11945 2cb716a9224bd01688df4feaa636e800 ""
   (generated)
   "Sol1.aux"
   "Sol1.log"
