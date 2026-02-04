@@ -1,0 +1,18 @@
+# LaTeX auxiliary files
+*.aux
+*.fdb_latexmk
+*.fls
+*.listing
+*.log
+*.out
+*.synctex.gz
+*.xdv
+*.pdf
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# XBB files (explicitly allowed for faster compilation)
+!*.xbb
