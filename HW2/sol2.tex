@@ -7,6 +7,7 @@
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{array}
+\usepackage{tabularx}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta, positioning}
 \definecolor{stageblue}{HTML}{307BF3}
@@ -63,6 +64,34 @@ A recommender system matches a user's query (context) to recommendable entities 
     \caption{Overview of the Recommender System Process}
     \label{fig:process_flow}
 \end{figure}
+
+\section{Candidate generation}
+\subsection{Overview}
+Candidate generation is the first stage of recommendation. Given a query, the system generates a set of relevant candidates. The following table shows two common candidate generation approaches:
+
+\begin{table}[ht]
+    \centering
+    \renewcommand{\arraystretch}{1.2}
+    \begin{tabularx}{\linewidth}{l X X}
+        \toprule
+        Type & Definition & Example \\
+        \midrule
+        content-based filtering & Uses \emph{similarity between items} to recommend items similar to what the user likes. & If user A watches two cute cat videos, then the system can recommend cute animal videos to that user. \\
+        \addlinespace
+        collaborative filtering & Uses \emph{similarities between queries and items simultaneously} to provide recommendations. & If user A is similar to user B, and user B likes video 1, then the system can recommend video 1 to user A (even if user A hasn't seen any videos similar to video 1). \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+Both content-based and collaborative filtering embed items and queries (contexts) into a shared low-dimensional space \(E=\mathbb{R}^{d}\). Candidate generation then retrieves items whose embeddings are most similar to the query embedding: a similarity function \(s:E\times E\to\mathbb{R}\) ranks candidates by \(s(q,x)\). Common choices include cosine similarity, dot product, and Euclidean distance.
+
+Unlike cosine similarity, dot product is sensitive to embedding norms, so large-norm vectors can be preferred even when the angle is similar. This can affect recommendations as follows:
+\begin{itemize}
+    \item Popular items often get large norms, so dot product can capture popularity but may cause popular items to dominate. A tempered variant is \(s(q,x)=\lVert q\rVert^{\alpha}\,\lVert x\rVert^{\alpha}\,\cos(q,x)\) for \(\alpha\in(0,1)\).
+    \item Rare items may be updated infrequently; if initialized with large norms they can be over-recommended. To avoid this problem, be careful about embedding initialization and use appropriate regularization.
+\end{itemize}
+
+\subsection{Content-based filtering}
 
 
 \end{document}
