@@ -66,8 +66,7 @@ A recommender system matches a user's query (context) to recommendable entities 
     \label{fig:process_flow}
 \end{figure}
 
-\section{Candidate generation}
-\subsection{Overview}
+\section{Candidate generation overview}
 Candidate generation is the first stage of recommendation. Given a query, the system generates a set of relevant candidates. The following table shows two common candidate generation approaches:
 
 \begin{table}[ht]
@@ -92,7 +91,7 @@ Unlike cosine similarity, dot product is sensitive to embedding norms, so large-
     \item Rare items may be updated infrequently; if initialized with large norms they can be over-recommended. To avoid this problem, be careful about embedding initialization and use appropriate regularization.
 \end{itemize}
 
-\subsection{Content-based filtering}
+\section{Content-based filtering}
 
 Content-based filtering recommends items that are similar to what a user already likes by comparing item feature vectors. Figure~\ref{fig:matrix1} illustrates a simple (binary) feature matrix for apps; a user can be represented in the same feature space using explicit preferences and past installs. Given a similarity metric (e.g., dot product), the system scores each candidate item against the user vector and recommends the highest-scoring items, without using information from other users.
 
@@ -106,13 +105,50 @@ Content-based filtering recommends items that are similar to what a user already
 
 Content-based filtering has the advantage that it does not require data about other users, since recommendations are computed specifically for a given user, which makes it easier to scale to a large user base; it can also capture a user’s particular interests and recommend niche items that few other users care about. However, it often relies on partially hand-engineered item features and substantial domain knowledge, so performance is limited by the quality of those features, and it can only recommend based on the user’s existing interests, giving it limited ability to broaden the user’s preferences beyond what they have already shown.
 
-\subsection{Collaborative filtering}
+\section{Collaborative filtering}
 To address some of the limitations of content-based filtering, collaborative filtering uses similarities between users and items simultaneously to provide recommendations. This allows for serendipitous recommendations; that is, collaborative filtering models can recommend an item to user A based on the interests of a similar user B. Furthermore, the embeddings can be learned automatically, without relying on hand-engineering of features.
 
+Consider a movie recommendation system in which the training data consist of a feedback matrix in which:
+\begin{itemize}
+    \item Each row represents a user.
+    \item Each column represents an item (a movie).
+\end{itemize}
 
+The feedback about movies falls into one of two categories:
+\begin{itemize}
+    \item \textbf{Explicit}---users specify how much they liked a particular movie by providing a numerical rating.
+    \item \textbf{Implicit}---if a user watches a movie, the system infers that the user is interested.
+\end{itemize}
 
+To simplify, we assume that the feedback matrix is binary; that is, a value of \(1\) indicates interest in the movie. When a user visits the homepage, the system should recommend movies based on both:
+\begin{itemize}
+    \item similarity to movies the user has liked in the past;
+    \item movies that similar users liked.
+\end{itemize}
 
+For the sake of illustration, let's hand-engineer some features for the movies described in the following table:
 
+\begin{table}[ht]
+    \centering
+    \renewcommand{\arraystretch}{1.15}
+    \begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}p{0.25\linewidth} c X}
+        \toprule
+        Movie & Rating & Description \\
+        \midrule
+        The Dark Knight Rises & PG-13 & Batman endeavors to save Gotham City from nuclear annihilation in this sequel to \emph{The Dark Knight}, set in the DC Comics universe. \\
+        \midrule
+        Harry Potter and the Sorcerer's Stone & PG & An orphaned boy discovers he is a wizard and enrolls in Hogwarts School of Witchcraft and Wizardry, where he wages his first battle against the evil Lord Voldemort. \\
+        \midrule
+        Shrek & PG & A lovable ogre and his donkey sidekick set off on a mission to rescue Princess Fiona, who is imprisoned in her castle by a dragon. \\
+        \midrule
+        The Triplets of Belleville & PG-13 & When professional cyclist Champion is kidnapped during the Tour de France, his grandmother and overweight dog journey overseas to rescue him, with the help of a trio of elderly jazz singers. \\
+        \midrule
+        Memento & R & An amnesiac desperately seeks to solve his wife's murder by tattooing clues onto his body. \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+\FloatBarrier
 
 
 \end{document}
+

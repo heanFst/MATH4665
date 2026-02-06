@@ -1,10 +1,10 @@
 # Fdb version 4
-["xdvipdfmx"] 1770348224 "sol2.xdv" "sol2.pdf" "sol2" 1770348225 0
-  "sol2.xdv" 1770348224 61216 e3fbad57fab89641aae0065b3c7e6876 "xelatex"
+["xdvipdfmx"] 1770356444 "sol2.xdv" "sol2.pdf" "sol2" 1770356445 0
+  "sol2.xdv" 1770356444 78536 cd4da725197a8c03bb9e6add2e2d2c9f "xelatex"
   (generated)
   "sol2.pdf"
   (rewritten before read)
-["xelatex"] 1770348219 "d:/文档/MATH4665/HW2/sol2.tex" "sol2.xdv" "sol2" 1770348225 0
+["xelatex"] 1770356438 "d:/文档/MATH4665/HW2/sol2.tex" "sol2.xdv" "sol2" 1770356445 0
   "Matrix1.png" 1770347215 39511 1c05c394464476ee3a82cb536d0be259 ""
   "d:/texlive/2023/texmf-dist/fonts/map/fontname/texfonts.map" 1687010835 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "d:/texlive/2023/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1687012439 1528 7e12f4c0fcf5a072cebdcfbfc610f54c ""
@@ -157,10 +157,10 @@
   "d:/texlive/2023/texmf-dist/web2c/texmf.cnf" 1687010426 40745 87bb86a62d462f93a1efc6b0c65c872e ""
   "d:/texlive/2023/texmf-var/web2c/xetex/xelatex.fmt" 1687012524 10502577 1a4b7fa565c6e38087537c7bb82400bc ""
   "d:/texlive/2023/texmf.cnf" 1687012448 713 e69b156964470283e0530f5060668171 ""
-  "d:/文档/MATH4665/HW2/sol2.tex" 1770348213 7439 dd43fdbee5b996c3ff086afbe86fa03e ""
-  "sol2.aux" 1770348224 1667 2e5de1f105c16fd5ab182d450d6a2beb "xelatex"
-  "sol2.out" 1770348224 835 ec1ee6409c6832250d6bdfc6c357aadf "xelatex"
-  "sol2.tex" 1770348213 7439 dd43fdbee5b996c3ff086afbe86fa03e ""
+  "d:/文档/MATH4665/HW2/sol2.tex" 1770356429 9717 a2ee80c5051c04efeb8b87fac6002f95 ""
+  "sol2.aux" 1770356444 1541 6245be051f599bab7c15a57b10580352 "xelatex"
+  "sol2.out" 1770356444 758 459d3a2ce41c9334f8d901eaf83f7c4d "xelatex"
+  "sol2.tex" 1770356429 9717 a2ee80c5051c04efeb8b87fac6002f95 ""
   (generated)
   "sol2.aux"
   "sol2.log"
