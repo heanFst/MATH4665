@@ -584,6 +584,17 @@ INPUT d:/texlive/2023/texmf-dist/tex/latex/tools/tabularx.sty
 INPUT d:/texlive/2023/texmf-dist/tex/latex/tools/tabularx.sty
 INPUT d:/texlive/2023/texmf-dist/tex/latex/tools/tabularx.sty
 INPUT d:/texlive/2023/texmf-dist/tex/latex/tools/array.sty
+INPUT d:/texlive/2023/texmf-dist/tex/latex/placeins/placeins.sty
+INPUT d:/texlive/2023/texmf-dist/tex/latex/placeins/placeins.sty
+INPUT d:/texlive/2023/texmf-dist/tex/latex/placeins/placeins.sty
+INPUT d:/texlive/2023/texmf-dist/tex/latex/placeins/placeins.sty
+INPUT d:/texlive/2023/texmf-dist/tex/latex/placeins/placeins.sty
+INPUT d:/texlive/2023/texmf-dist/tex/latex/placeins/placeins.sty
+INPUT d:/texlive/2023/texmf-dist/tex/latex/placeins/placeins.sty
+INPUT d:/texlive/2023/texmf-dist/tex/latex/placeins/placeins.sty
+INPUT d:/texlive/2023/texmf-dist/tex/latex/placeins/placeins.sty
+INPUT d:/texlive/2023/texmf-dist/tex/latex/placeins/placeins.sty
+INPUT d:/texlive/2023/texmf-dist/tex/latex/placeins/placeins.sty
 INPUT d:/texlive/2023/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
 INPUT d:/texlive/2023/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
 INPUT d:/texlive/2023/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
@@ -872,6 +883,9 @@ INPUT d:/texlive/2023/texmf-dist/fonts/tfm/public/cm/cmex10.tfm
 INPUT d:/texlive/2023/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm
 INPUT d:/texlive/2023/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
 OUTPUT sol2.xdv
+INPUT ./Matrix1.png
+INPUT ./Matrix1.png
+INPUT Matrix1.png
 INPUT sol2.aux
 INPUT ./sol2.out
 INPUT ./sol2.out
