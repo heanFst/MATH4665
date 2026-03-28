@@ -5,7 +5,10 @@
 *.bbl
 *.out
 *.blg
-*.cls
 *.bcf
 *.xml
 *.gz
+*.fdb_latexmk
+*.fls
+*.xdv
+*-SAVE-ERROR
