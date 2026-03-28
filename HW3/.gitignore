@@ -1,3 +1,11 @@
 *.aux
 *.log
 *.synctex.gz
+*.run.xml
+*.bbl
+*.out
+*.blg
+*.cls
+*.bcf
+*.xml
+*.gz
